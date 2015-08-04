@@ -130,5 +130,16 @@ RSpec.describe "AuthenticationPages", type: :request do
         specify { expect(response).to redirect_to(root_path) }
       end
     end
+
+    describe "admin user self delete" do
+      let(:admin) { FactoryGirl.create(:admin) }
+
+      before { sign_in admin, no_capybara: true }
+
+      describe "request DELETE admin self" do
+        before { delete user_path(admin) }
+        specify { expect(response).to redirect_to(root_path) }
+      end
+    end
   end
 end
