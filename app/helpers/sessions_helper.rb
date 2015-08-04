@@ -30,11 +30,28 @@ module SessionsHelper
   end
 
   def redirect_back_or(default)
+    logger.debug("---------------------------")
+    logger.debug("redirect_back_or")
+    logger.debug("---------------------------")
+    logger.debug(session[:return_to])
+    logger.debug(default.to_s)
+    logger.debug(request.url)
+    logger.debug("---------------------------")
     redirect_to(session[:return_to] || default)
     session.delete(:return_to)
   end
 
   def store_location
+    logger.debug("---------------------------")
+    logger.debug("store_location")
+    logger.debug("---------------------------")
+    logger.debug(session[:return_to])
+    logger.debug(request.url)
+    logger.debug("---------------------------")
     session[:return_to] = request.url
+    logger.debug("---------------------------")
+    logger.debug(session[:return_to])
+    logger.debug(request.url)
+    logger.debug("---------------------------")
   end
 end

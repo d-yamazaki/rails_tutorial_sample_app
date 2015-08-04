@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
-  before_action :signed_in_user, only: [:index, :edit, :update]
-  before_action :correct_user,   only: [:edit, :update]
-  before_action :admin_user,     only: :destroy
+  before_action :signed_in_user,  only: [:index, :edit, :update, :destroy]
+  before_action :correct_user,    only: [:edit, :update]
+  before_action :admin_user,      only: :destroy
+  before_action :signing_in_user, only: [:new, :create]
 
   def index
     @users = User.paginate(page: params[:page])
@@ -53,8 +54,16 @@ class UsersController < ApplicationController
     # Before actions
 
     def signed_in_user
-      store_location
-      redirect_to signin_url, notice: "Please sign in." unless signed_in?
+      if !signed_in?
+        store_location
+        redirect_to signin_url, notice: "Please sign in." unless signed_in?
+      end
+    end
+
+    def signing_in_user
+      if signed_in?
+        redirect_to(root_path)
+      end
     end
 
     def correct_user
