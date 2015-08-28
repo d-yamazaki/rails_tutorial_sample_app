@@ -208,5 +208,14 @@ RSpec.describe User, type: :model do
         it { should_not be_following(other_user) }
         it { expect(@user.followed_users).not_to include(other_user) }
     end
+
+    it "should destroy relationships" do
+      relationships = @user.relationships.to_a
+      @user.destroy
+      expect(relationships).not_to be_empty
+      relationships.each do |relationship|
+        expect(Relationship.where(follower_id: relationship.follower_id, followed_id: relationship.followed_id)).to be_empty
+      end
+    end
   end
 end
